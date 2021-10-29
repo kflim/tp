@@ -19,12 +19,12 @@ public class ViewTaskListCommandParser implements Parser<ViewTaskListCommand> {
     private static final String VALID_INPUT_WITH_FLAGS_REGEX = "[0-9]\\s-f\\s[\\w\\s]+";
     private static final String VALID_INPUT_WITHOUT_FLAGS_REGEX = "[0-9]+";
     private static final String VALID_VIEW_ALL_REGEX = "-A";
-    private static final String VALID_VIEW_ALL_REGEX_WTIH_FLAG = "-A[\\s]*-f\\s[\\w\\s]+";
+    private static final String VALID_VIEW_ALL_REGEX_WITH_FLAG = "-A[\\s]*-f\\s[\\w\\s]+";
 
     private final Pattern validPatternWithoutFlags = Pattern.compile(VALID_INPUT_WITHOUT_FLAGS_REGEX);
     private final Pattern validPatternWithFlags = Pattern.compile(VALID_INPUT_WITH_FLAGS_REGEX);
-    private final Pattern viewAllWithoutFind = Pattern.compile(VALID_VIEW_ALL_REGEX);
-    private final Pattern viewAllWithFind = Pattern.compile(VALID_VIEW_ALL_REGEX_WTIH_FLAG);
+    private final Pattern validViewAllWithoutFind = Pattern.compile(VALID_VIEW_ALL_REGEX);
+    private final Pattern validViewAllWithFind = Pattern.compile(VALID_VIEW_ALL_REGEX_WITH_FLAG);
 
     private Matcher matcherWithoutFlags;
     private Matcher matcherWithFlags;
@@ -70,8 +70,8 @@ public class ViewTaskListCommandParser implements Parser<ViewTaskListCommand> {
     private void setMatchers(String args) {
         matcherWithoutFlags = validPatternWithoutFlags.matcher(args);
         matcherWithFlags = validPatternWithFlags.matcher(args);
-        matcherViewAllWithoutFind = viewAllWithoutFind.matcher(args);
-        matcherViewAllWithFind = viewAllWithFind.matcher(args);
+        matcherViewAllWithoutFind = validViewAllWithoutFind.matcher(args);
+        matcherViewAllWithFind = validViewAllWithFind.matcher(args);
     }
 
     private List<String> extractKeywords(String args) {

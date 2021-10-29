@@ -15,7 +15,7 @@ Class ModelManager
 Class UserPrefs
 Class ReadOnlyUserPrefs
 
-
+Class UserCommandCache
 Class UniquePersonList
 Class Person
 Class Address
@@ -52,6 +52,8 @@ Person --> "1" Description
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
+
+ModelManager -down--> "1" UserCommandCache
 
 ModelManager -->"~* filtered" Person
 @enduml

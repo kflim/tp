@@ -1,0 +1,14 @@
+@startuml
+start
+:addCommand is called;
+
+if () then ([size is bigger than 50])
+    :Copy 25 newest command to a new list;
+    :Set temporary list as new list;
+    :Set index pointer to 25;
+else ([else])
+endif
+:Add command to list;
+:Add pointer by 1;
+stop
+@enduml

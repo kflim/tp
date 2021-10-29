@@ -7,4 +7,7 @@
     -fx-wrap-text: true;
 }
 
+#taskName {
+    -fx-text-fill: white;
+}
 

@@ -2,11 +2,20 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
 
 <HBox fx:id="descriptionPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="id" text="Label" />
-      <Text fx:id="taskName" text="Label" HBox.hgrow="ALWAYS"/>
+      <VBox>
+         <HBox alignment="CENTER_LEFT" spacing="5">
+            <Label fx:id="id" text="\$id" />
+            <Label fx:id="taskName" styleClass="cell_big_label" text="\$taskName" />
+         </HBox>
+         <HBox alignment="CENTER_LEFT" spacing="30">
+            <Label fx:id="taskDate" styleClass="cell_small_label" text="\$taskDate" />
+            <Label fx:id="taskTime" styleClass="cell_small_label" text="\$taskTime" />
+            <Label fx:id="taskVenue" styleClass="cell_small_label" text="\$taskVenue" />
+         </HBox>
+      </VBox>
    </children>
 </HBox>

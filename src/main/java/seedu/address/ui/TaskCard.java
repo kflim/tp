@@ -10,7 +10,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import seedu.address.model.task.Task;
 
 /**
@@ -27,7 +26,13 @@ public class TaskCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Text taskName;
+    private Label taskName;
+    @FXML
+    private Label taskDate;
+    @FXML
+    private Label taskTime;
+    @FXML
+    private Label taskVenue;
 
     /**
      * Creates a {@code TaskCard} with the given {@code Task} and index to display.
@@ -36,6 +41,13 @@ public class TaskCard extends UiPart<Region> {
         super(FXML);
         this.task = task;
         this.displayedIndex = displayedIndex;
+        taskName.setText("Task: " + task.getTaskName().taskName);
+        String taskDateStr = task.getDate() == null ? "" : "Date: " + task.getDate().taskDate.toString();
+        String taskTimeStr = task.getTime() == null ? "" : "Time: " + task.getTime().taskTime.toString();
+        String taskVenueStr = task.getVenue() == null ? "" : "Venue: " + task.getVenue().venue;
+        taskDate.setText(taskDateStr);
+        taskTime.setText(taskTimeStr);
+        taskVenue.setText(taskVenueStr);
     }
 
     /**
@@ -50,17 +62,21 @@ public class TaskCard extends UiPart<Region> {
                 vbox.widthProperty(), vbox.paddingProperty()));
 
         // Sets width property of Text to be dependent on VBox's width and padding property.
-        taskName.wrappingWidthProperty().bind(Bindings.createDoubleBinding(()->
+        taskName.maxWidthProperty().bind(Bindings.createDoubleBinding(()->
                 vbox.getWidth() - vbox.getPadding().getLeft() - vbox.getPadding().getRight() - value,
                 vbox.widthProperty(), vbox.paddingProperty()));
 
         id.setText(displayedIndex + ". ");
-        String name = task.getTaskName().taskName;
-        String taskDate = task.getDate() == null ? "" : task.getDate().taskDate.toString();
-        String taskTime = task.getTime() == null ? "" : task.getTime().taskTime.toString();
-        String taskVenue = task.getVenue() == null ? "" : task.getVenue().venue;
-        String taskString = "Task: " + name
-                + "\nDate: " + taskDate + "; Time: " + taskTime + "; Venue: " + taskVenue;
+
+        taskDate.setBackground(new Background(
+                new BackgroundFill(javafx.scene.paint.Paint.valueOf("blue"), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        taskTime.setBackground(new Background(
+                new BackgroundFill(javafx.scene.paint.Paint.valueOf("blueviolet"), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        taskVenue.setBackground(new Background(
+                new BackgroundFill(javafx.scene.paint.Paint.valueOf("brown"), CornerRadii.EMPTY, Insets.EMPTY)));
+
         if (task.getDone()) {
             descriptionPane.setBackground(new Background(
                     new BackgroundFill(javafx.scene.paint.Paint.valueOf("green"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -75,6 +91,5 @@ public class TaskCard extends UiPart<Region> {
             descriptionPane.setBackground(new Background(
                     new BackgroundFill(javafx.scene.paint.Paint.valueOf("red"), CornerRadii.EMPTY, Insets.EMPTY)));
         }
-        taskName.setText(taskString);
     }
 }

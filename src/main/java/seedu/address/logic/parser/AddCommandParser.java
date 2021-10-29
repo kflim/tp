@@ -37,6 +37,9 @@ public class AddCommandParser implements Parser<Command> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parse(String args) throws ParseException {
+        if (args.equals("")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
         if (!StringUtil.isNonZeroUnsignedInteger(args.substring(1, 2))) {
             ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
@@ -54,9 +57,9 @@ public class AddCommandParser implements Parser<Command> {
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK_DESCRIPTION));
             Description description = ParserUtil.parseDescription(argMultimap.getValue(PREFIX_DESCRIPTION)
-                        .orElse(""));
+                    .orElse(""));
             Boolean isImportant = ParserUtil.parseImportance(argMultimap.getValue(PREFIX_IMPORTANCE)
-                        .orElse("false"));
+                    .orElse("false"));
             Person person = new Person(name, phone, email, address, tagList, taskList, description, isImportant);
 
             return new AddCommand(person);

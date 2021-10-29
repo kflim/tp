@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <GridPane HBox.hgrow="ALWAYS">
@@ -18,7 +17,7 @@
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
          <ColumnConstraints />
     </columnConstraints>
-      <Text fx:id="tasksDue" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="2" />
+      <Label fx:id="tasksDue" styleClass="cell_small_label" text= "\$tasksDue" GridPane.columnIndex="2" />
     <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
       <padding>
         <Insets bottom="5" left="15" right="5" top="5" />
@@ -53,7 +52,7 @@
                <Insets bottom="2.0" right="2.0" top="2.0" />
             </VBox.margin></Label>
     </VBox>
-      <Text fx:id="taskList" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
+      <Label fx:id="description" styleClass="cell_small_label" text= "\$description" GridPane.columnIndex="1" />
       <rowConstraints>
          <RowConstraints />
       </rowConstraints>

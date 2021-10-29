@@ -1,0 +1,15 @@
+@startuml
+
+start
+:User enters find -n Alex command;
+if () then ([Valid command format])
+  :Create a predicate based on the flag and keywords;
+  :Filter the person list with the predicate;
+  :UI updates the GUI to display the new person list;
+else ([else])
+  :Show invalid format error message;
+endif
+
+stop
+
+@enduml

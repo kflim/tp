@@ -39,8 +39,10 @@ import seedu.address.logic.commands.EditTaskCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ReminderCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.commands.ViewTaskListCommand;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Description;
 import seedu.address.model.person.Email;
@@ -222,14 +224,15 @@ public class HelpWindow extends AnchorPane {
         EditTaskCommand.EditTaskDescriptor taskDescriptor = new EditTaskCommand.EditTaskDescriptor();
 
         ObservableList<Command> data = FXCollections.observableArrayList(
-                new AddCommand(samplePerson), new ClearCommand(), new DeleteCommand(Index.fromZeroBased(0)),
-                new EditCommand(Index.fromZeroBased(0), descriptor), new FindCommand(null),
-                new ListCommand(), new ExitCommand(), new SortCommand(false),
-                new AddTaskCommand(Index.fromZeroBased(0), new ArrayList<>()),
+                new AddCommand(samplePerson), new AddTaskCommand(Index.fromZeroBased(0), new ArrayList<>()),
+                new ClearCommand(), new DeleteCommand(Index.fromZeroBased(0)),
                 new DeleteTaskCommand(Index.fromZeroBased(0), new ArrayList<>()),
-                new EditTaskCommand(Index.fromZeroBased(0), Index.fromZeroBased(0), taskDescriptor),
                 new DoneCommand(Index.fromZeroBased(0), new ArrayList<>()),
-                new UndoCommand(Index.fromZeroBased(0), new ArrayList<>())
+                new EditCommand(Index.fromZeroBased(0), descriptor),
+                new EditTaskCommand(Index.fromZeroBased(0), Index.fromZeroBased(0), taskDescriptor), new ExitCommand(),
+                new FindCommand(null), new ListCommand(), new ReminderCommand(),
+                new SortCommand(false),
+                new UndoCommand(Index.fromZeroBased(0), new ArrayList<>()), new ViewTaskListCommand()
         );
 
         tableView.setItems(data);
@@ -250,18 +253,20 @@ public class HelpWindow extends AnchorPane {
 
     private void fillCommandTable() {
         commandTable.put(AddCommand.COMMAND_WORD, this::handleAdd);
+        commandTable.put(AddTaskCommand.COMMAND_WORD, this::handleAddTask);
         commandTable.put(ClearCommand.COMMAND_WORD, this::handleClear);
         commandTable.put(DeleteCommand.COMMAND_WORD, this::handleDelete);
+        commandTable.put(DeleteTaskCommand.COMMAND_WORD, this::handleDelTask);
+        commandTable.put(DoneCommand.COMMAND_WORD, this::handleDoneTask);
         commandTable.put(EditCommand.COMMAND_WORD, this::handleEdit);
+        commandTable.put(EditTaskCommand.COMMAND_WORD, this::handleEditTask);
+        commandTable.put(ExitCommand.COMMAND_WORD, this::handleExit);
         commandTable.put(FindCommand.COMMAND_WORD, this::handleFind);
         commandTable.put(ListCommand.COMMAND_WORD, this::handleList);
-        commandTable.put(ExitCommand.COMMAND_WORD, this::handleExit);
+        commandTable.put(ReminderCommand.COMMAND_WORD, this::handleReminder);
         commandTable.put(SortCommand.COMMAND_WORD, this::handleSort);
-        commandTable.put(AddTaskCommand.COMMAND_WORD, this::handleAddTask);
-        commandTable.put(DeleteTaskCommand.COMMAND_WORD, this::handleDelTask);
-        commandTable.put(EditTaskCommand.COMMAND_WORD, this::handleEditTask);
-        commandTable.put(DoneCommand.COMMAND_WORD, this::handleDoneTask);
         commandTable.put(UndoCommand.COMMAND_WORD, this::handleUndoTask);
+        commandTable.put(ViewTaskListCommand.COMMAND_WORD, this::handleViewTask);
         commandTable.put("close", this::handleCloseWindow);
     }
 
@@ -298,71 +303,104 @@ public class HelpWindow extends AnchorPane {
     }
 
     private void handleAdd() {
-        additionalInfo.setText("Format: add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…\n"
-                + "A person can have any number of tags (including 0)");
+        additionalInfo.setText("Format: "
+                + "add -n NAME -p PHONE_NUMBER -e EMAIL -a ADDRESS [-l TAG]… [-d DESCRIPTION] [-impt IMPORTANCE]"
+                + "\nA person can have any number of labels "
+                + "\nOnly true or false will be accepted for the IMPORTANCE value"
+        );
+    }
+
+    private void handleAddTask() {
+        additionalInfo.setText("Format: "
+                + "add INDEX -tn TASK_NAME [-td TASK_DATE] [-tt TASK_TIME] [-ta TASK_ADDRESS]"
+                + "\nAdds a task to the person at the specified INDEX"
+        );
     }
 
     private void handleClear() {
-        additionalInfo.setText("Format: clear\nClears and resets the data in ContactSh");
+        additionalInfo.setText("Format: clear \nClears all entries from ContactSH.");
     }
 
     private void handleDelete() {
-        additionalInfo.setText("Format: delete INDEX\nDeletes the person at the specified index IF it is valid");
+        additionalInfo.setText("Format: "
+                + "rm INDEX [-A]"
+                + "\nDeletes the person at the specified index IF it is valid. "
+                + "\nIf the optional -A flag is given, all of the current data will be deleted"
+        );
+    }
+
+    private void handleDelTask() {
+        additionalInfo.setText("Format: rm INDEX -ti TASK_INDEX… \nDeletes a task from the specified person.");
+    }
+
+    private void handleDoneTask() {
+        additionalInfo.setText("Format: "
+                + "donetask INDEX -ti TASK_INDEX…"
+                + "\nMarks tasks attached to the person at the specified INDEX as done"
+        );
     }
 
     private void handleEdit() {
-        additionalInfo.setText("Format: edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…\n"
-                + "Edits the person at the specified index IF it is valid\n"
-                + "You can remove all the person’s tags by typing t/ without specifying any tags after it.");
+        additionalInfo.setText("Format: "
+                + "edit INDEX -ti TASK_INDEX [-tn TASK_NAME] [-td TASK_DATE] [-tt TASK_TIME] [-ta TASK_ADDRESS]…"
+                + "\nEdits the person at the specified index IF it is valid"
+        );
+    }
+
+    private void handleEditTask() {
+        additionalInfo.setText("Format: "
+                + "edit INDEX -ti TASK_INDEX [-tn TASK_NAME] [-td TASK_DATE] [-tt TASK_TIME] [-ta TASK_ADDRESS]…"
+                + "\nEdits a task attached to the person (at the specified INDEX) according to the TASK_INDEX"
+                + "\nAt least one of the optional fields must be provided."
+        );
+    }
+
+    private void handleExit() {
+        additionalInfo.setText("Format: exit" + "\nExits the program entirely");
     }
 
     private void handleFind() {
-        additionalInfo.setText("Format: find FLAG KEYWORD [MORE_KEYWORDS]\n"
-                + "Persons matching all the keywords will be returned\n"
-                + "The flags available to use are -a, -e, -n, -p and -t"
+        additionalInfo.setText("Format: "
+                + "find [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-a ADDRESS] [-l TAG]… [-d DESCRIPTION] "
+                + "[-tn TASK_NAME] KEYWORD [MORE_KEYWORDS]"
+                + "\nPersons matching all the keywords will be returned"
+                + "\nAt least one of the optional fields must be provided"
         );
     }
 
     private void handleList() {
-        additionalInfo.setText("Format: list\n" + "Shows a list of all persons in ContactSh");
+        additionalInfo.setText("Format: list" + "\nShows a list of all persons in ContactSh");
     }
 
-    private void handleExit() {
-        additionalInfo.setText("Format: exit\n" + "Exits the program entirely");
+    private void handleReminder() {
+        additionalInfo.setText("Format: "
+                + "reminder [-s DAYS]"
+                + "\nShows the number of days prior to a task's date for the task to be reminded as due soon"
+                + "\nIf the optional field is provided, it sets the number of days to the provided number"
+        );
     }
 
     private void handleSort() {
-        additionalInfo.setText("Format: sort [-r]\n"
-                + "Sort persons by the alphabetical order of their name.\n"
-                + "If the optional -r flag is provided, a list of persons sorted in reverse order is displayed");
-    }
-
-    private void handleAddTask() {
-        additionalInfo.setText("Format: addtask INDEX task/TASKNAME\n"
-                + "Adds a task to the person at the specified INDEX");
-    }
-
-    private void handleDelTask() {
-        additionalInfo.setText("Format: deletetask INDEX ti/TASK_INDEX\n"
-                + "Deletes a task attached to the person at the specified INDEX");
-    }
-
-    private void handleEditTask() {
-        additionalInfo.setText("Format: edittask INDEX ti/TASK_INDEX [task/TASKNAME]\n"
-                + "Edits a task attached to the person (at the specified INDEX) according to the TASK_INDEX\n"
-                + "At least one of the optional fields must be provided.");
-    }
-
-    private void handleDoneTask() {
-        additionalInfo.setText("Format: donetask INDEX -ti TASK_INDEX\n"
-                + "Marks task(s) indicated by the TASK_INDEX "
-                + "of person indicated by INDEX as done.");
+        additionalInfo.setText("Format: "
+                + "sort [-r]"
+                + "\nSort persons by the alphabetical order of their name."
+                + "\nIf the optional -r flag is provided, a list of persons sorted in reverse order is displayed"
+        );
     }
 
     private void handleUndoTask() {
-        additionalInfo.setText("Format: undotask INDEX -ti TASK_INDEX\n"
-                + "Marks task(s) indicated by the TASK_INDEX "
-                + "of person indicated by INDEX as not done.");
+        additionalInfo.setText("Format: "
+                + "undotask INDEX -ti TASK_INDEX…"
+                + "\nMarks task(s) indicated by the TASK_INDEX of person indicated by INDEX as not done."
+        );
+    }
+
+    private void handleViewTask() {
+        additionalInfo.setText("Format: "
+                + "cat INDEX [-f KEYWORDS]"
+                + "\nShows the tasks of person specified person"
+                + "\nIf the optional field KEYWORDS is given, a filtered list of tasks will be shown"
+        );
     }
 
     private void handleCloseWindow() {

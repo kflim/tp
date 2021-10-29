@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox fx:id="vbox" maxHeight="Infinity" maxWidth="Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vbox" maxHeight="Infinity" maxWidth="Infinity" styleClass="pane-with-border" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="AllTaskListPanelHeader" prefWidth="${AllTaskListPanelHeader.parent.width}" text="All Task List" />
-      <TreeView fx:id="allTaskListView" VBox.vgrow="ALWAYS" />
+      <TreeView fx:id="allTaskListView" VBox.vgrow="ALWAYS" styleClass="tree-view" />
    </children>
 </VBox>

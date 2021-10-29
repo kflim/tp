@@ -9,7 +9,7 @@
 }
 
 .chart-legend {
-    -fx-max-width: 150;
+    -fx-max-width: 160;
     -fx-wrap-text: true;
 }
 

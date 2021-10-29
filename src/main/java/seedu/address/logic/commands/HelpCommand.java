@@ -114,7 +114,6 @@ public class HelpCommand extends Command {
                 break;
             }
 
-            commandResult.setWriteCommand();
             return commandResult;
         }
     }

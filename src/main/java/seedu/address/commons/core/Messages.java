@@ -14,5 +14,6 @@ public class Messages {
             + "bug report?";
     public static final String MESSAGE_UNKNOWN_INTERNAL_COMMAND = "Unknown internal command! Make a "
             + "bug report?";
+    public static final String MESSAGE_INVALID_REMINDER_DAY_VALUE = "The value of the day must be a positive Integer!";
 
 }

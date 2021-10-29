@@ -124,6 +124,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the previous user input into the `UserCommandCache`
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -210,6 +211,121 @@ The following activity diagram summarises what happens when a user executes a `c
       which reduces efficiency).
 
     - Lesser view of information.
+
+### Command Cache
+
+The command Cache is the aspect of the program which stores the previous user input. This allows the user to browse
+through the previous input using the up and down arrow key which simulates the Linux experience.
+
+This function is facilitated by 3 aspects of the program:
+1. CommandBox in GUI
+2. InternalCommand in Logic
+3. UserCommandCache in Model
+
+#### Caching the command
+The following sequence diagram demonstrates how the caching mechanism in the Model and Logic unit:
+![CachingModelAndLogic](images/CachingModelAndLogic.png)
+
+:information_source: **Note:** The execution of the command happens after the caching
+(and is omitted in the above diagram). This means invalid commands are also stored.
+
+The following activity diagram illustrates how the storage in the cache is handled:
+![CacheAddCommandActivityDiagram](images/CacheAddCommandActivityDiagram.png)
+
+With the current iteration, the cache may hold up to 50 most recent command. However, only the newest 25 command is
+guaranteed to be saved at all times. The user is not blocked from accessing older commands as it provides additional
+functionality without too much loss.
+
+#### Accessing the Cache
+As mentioned before, the caching feature utilises a different kind of command as with other features. The reason will be
+explored in the design consideration section. Nonetheless, both command type are handled by the Logic unit almost
+exactly the same way.
+
+The diagram below shws the generation of the internal command in the GUI:
+![AccessingCacheSequenceDiagram](images/AccessingCacheSequenceDiagram.png)
+
+The cache, stored in the Model, is implemented using the Singleton design pattern as there should, at all times,
+be only one cache existing.
+
+#### Design Consideration
+##### Aspect: Accessing cache
+* **Alternative 1** : Have cache stored in model and piggyback on existing command code.
+
+    * Pros:
+
+        * A relatively simple design with less possibility of bug
+        * Less effort needed
+        * Still maintain cohesion and separation of responsibility
+
+    * Cons:
+
+        * Could not differentiate between internal and external input command. This leads to either the possibility
+          for user to input the internal commands accidentally, causing bug, or some commands being blocked from running
+
+* **Alternative 2 (current choice):** Have cache stored in model and create new internal command.
+
+    * Pros:
+
+        * No need for command blocking and no possibility for user to accidentally type in the command
+        * Still maintain cohesion and separation of responsibility
+
+    * Cons:
+
+        * Increased avenue for bugs
+        * More coding to be done
+        * Relatively worse in terms of "repeating yourself"
+
+* **Alternative 3:** Have cache stored in UI.
+
+    * Pros:
+
+        * No need for extraction using commands
+        * Simple implementation
+
+    * Cons:
+
+        * Breaks the MVC pattern as UI now saves things
+        * Decreased cohesion
+
+### Find people feature
+
+Displays the people associated with the specified search keywords onto the `PersonListPanel` of the GUI.
+
+Given below is the example usage scenario:
+
+Step 1. The user launches the ContactSh application. Data will be loaded from the storage to the application memory. The `PersonListPanel` will be populated with a `PersonCard` for every person from memory.
+
+Step 2. The user executes `find -n Alex` command to find anyone whose name could be abbreviated to be `Alex` on the currently displayed person list.
+
+Step 3. If the parameters entered by the user is valid, the application will retrieve any `Person` that matches the keywords given. The person list reference currently encapsulated by the `FilteredList` will then be filtered based on whether a person has an attribute that matches the keywords. The updated `FilteredList` is then shown to the user with all matching persons via the `PersonListPanel`. Else, ContactSh will display an error message indicating that the user did not type in the parameters correctly.
+
+The following sequence diagram show how the find operation works:
+
+![ViewTaskListSequenceDiagram](images/FindSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If the user does not provide any keywords or uses an invalid flag, ParseException will be thrown and an error message providing the correct format will be shown.
+
+The following activity diagram summarises what happens when a user executes a `find -n Alex` command:
+
+![ViewTaskListActivityDiagram](images/FindActivityDiagram.png)
+
+#### Design consideration:
+
+##### Aspect: How to find based on the keywords
+
+- **Alternative 1 (current choice):** Check that the order of the keywords matches the order they appear in for any person's attribute (e.g. name) and whether each separate word of a person's attribute starts with the keywords, ignoring case.
+
+    - Pros: The user is able to use abbreviations for certain attributes to find people and not have to worry about exact matching
+    - Cons:
+        - The user can no longer find multiple people (using different keywords) and even if at least one of the keywords matches a person's attribute, it will not display the person if the keywords are out of order and do not all appear in the person's attribute.
+
+- **Alternative 2:** Use exact matching and check if any of the keywords matches a person's attribute
+
+    - Pros: Easier to implement.
+
+    - Cons:
+
+        - Keywords provided must be exact, so even if the user is missing one letter, it will not display the expected person
 
 ### \[Proposed\] Undo/redo feature
 
@@ -333,23 +449,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
 | -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| | **experienced user** |	**manipulate multiple contacts with one command** | **improve my work efficiency** |
-| `**` | experienced user | delete multiple contacts using only one command | improve my work efficiency |
-| `**` | experienced user |	move multiple contacts using only one command | improve my work efficiency |
-| `**` | experienced user |	add multiple contacts using only one command | improve my work efficiency |
-| `**` | experienced user |	search for contacts using abbreviations | improve my work efficiency |
-| | **expert CL user** | **use high-level CLI instructions** | **directly use the app at a high-level** |
-| `**` | expert CL user | make command combinations | execute multiple instructions in one line |
-| `**` | expert CL user | redirect input/output | input/output from/to files instead of stdin |
-| `**` | expert CL user | create scripts | automate specific tasks |
+| `***` | user | update contact details | keep track of their details |
+| `***` | user | delete contacts | get rid of contacts who are no longer relevant |
+| | **general user** | | |
+| `**` | general CLI user| use commands from cli | exclude the need to learn new commands |
+| `**` | student entrepreneur | categorize my business contacts | organize them better |
+| `**` | student entrepreneur | differentiate between business and student contacts | differentiate easily |
+| `***` | student entrepreneur | view my contacts in an organized manner | have a better overview |
+| `***` | new user | save contacts | keep track of them |
+| `***` | new user | purge all example contacts | start adding my own contacts |
 | | **beginner user** | **learn commands fast** | **spend less time on learning** |
 | `***` | beginner user | view the user guide easily | learn the commands as and when I need |
 | `***` | beginner user | view the list of instructions | know what instructions are available |
 | `***` | beginner user | see examples of contacts | have an idea of how contacts will be presented |
 | | **student entrepreneur** | **organise my contacts according to specific groups** | **find the ones i want easily** |
-| `**` | student entrepreneur | categorize my business contacts | organize them better |
-| `**` | student entrepreneur | differentiate between business and student contacts | differentiate easily |
-| `***` | student entrepreneur | view my contacts in an organized manner | have a better overview |
 | | **intermediate user** | **sort and filter my contacts** | **sieve out irrelevant contacts** |
 | `***` | intermediate user | look through the list of contacts| see the contacts I have added |
 | `***` | intermediate user | search for contact names | directly find the contact of a person in mind |
@@ -358,15 +471,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `**` | intermediate user | sort contacts by tasks | identify connections between contacts |
 | `**` | intermediate user | choose what information about my contacts to view | read the information easier |
 | `***` | intermediate user | view task from contacts | see what tasks are connected to said contact |
+| | **experienced user** |	**manipulate multiple contacts with one command** | **improve my work efficiency** |
+| `**` | experienced user | delete multiple contacts using only one command | improve my work efficiency |
+| `**` | experienced user |	move multiple contacts using only one command | improve my work efficiency |
+| `**` | experienced user |	add multiple contacts using only one command | improve my work efficiency |
+| `**` | experienced user |	search for contacts using abbreviations | improve my work efficiency |
 | | **experienced user** | **update large number of contacts at once** | **exclude manually adding them myself** |
 | `**` | experienced user | import a list of contacts | add a large number of contacts at once |
 | `**` | experienced user | export a list of contacts | send them to other people |
-| | **general user** | | |
-| `**` | general CLI user| use commands from cli | exclude the need to learn new commands |
-| `***` | user | update contact details | keep track of their details |
-| `***` | user | delete contacts | get rid of contacts who are no longer relevant |
-| `***` | new user | save contacts | keep track of them |
-| `***` | new user | purge all example contacts | start adding my own contacts |
+| | **expert CL user** | **use high-level CLI instructions** | **directly use the app at a high-level** |
+| `**` | expert CL user | make command combinations | execute multiple instructions in one line |
+| `**` | expert CL user | redirect input/output | input/output from/to files instead of stdin |
+| `**` | expert CL user | create scripts | automate specific tasks |
 
 ### Use cases
 

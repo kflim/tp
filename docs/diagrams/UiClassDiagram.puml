@@ -32,7 +32,7 @@ HiddenOutside ..> Ui
 
 UiManager .left.|> Ui
 UiManager -down-> "1" MainWindow
-MainWindow *-down-> "1" TaskListPanel
+MainWindow *-down--> "1" TaskListPanel
 MainWindow *-down->  "1" CommandBox
 MainWindow *-down-> "1" ResultDisplay
 MainWindow *-down-> "1" PersonListPanel
@@ -40,7 +40,7 @@ MainWindow *-down-> "1" StatusBarFooter
 MainWindow --> "0..1" HelpWindow
 
 PersonListPanel -down-> "*" PersonCard
-TaskListPanel ---> "*" TaskCard
+TaskListPanel --> "*" TaskCard
 
 MainWindow -down-|> UiPart
 

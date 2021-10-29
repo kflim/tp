@@ -13,7 +13,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -176,8 +175,9 @@ public class AllTaskListPanel extends UiPart<Region> {
 
                 if (isNameHeader) {
                     Name name = tuple.getName();
-                    Text text = new Text(name.toString());
-                    setGraphic(text);
+                    Label label = new Label(name.toString());
+                    label.setStyle("-fx-text-fill: cornsilk; -fx-font-weight: bold;");
+                    setGraphic(label);
                 } else {
                     Task task = tuple.getTask();
                     TaskCard tc = new TaskCard(task, tuple.getIndex());

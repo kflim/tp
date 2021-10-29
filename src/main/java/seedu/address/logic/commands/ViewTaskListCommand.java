@@ -12,17 +12,23 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.task.TaskMatchesKeywordPredicate;
 
+/**
+ * Displays the task list of a specified person.<br>
+ * Displays the task list of every person if "-A" flag is provided.
+ */
 public class ViewTaskListCommand extends Command {
     public static final String COMMAND_WORD = "cat";
-
-    public static final String DESCRIPTION = "Displays the task list of a person specified by index number."
-            + "used in the displayed person list";
-
+    public static final String ALL_FLAG = "-A";
+    public static final String DISPLAY_SINGLE_DESCRIPTION = "Displays the task list of a "
+            + "person specified by index number"
+            + " used in the displayed person list";
+    public static final String DISPLAY_ALL_DESCRIPTION = "Displays the task list of every person";
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": " + DESCRIPTION + "\n"
+            + ": " + DISPLAY_SINGLE_DESCRIPTION + "\n"
             + "Parameters: "
             + "INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 2";
+            + "Example: " + COMMAND_WORD + " 2\n"
+            + COMMAND_WORD + " " + ALL_FLAG + ": " + DISPLAY_ALL_DESCRIPTION;
 
     public static final String MESSAGE_VIEW_TASKS_SUCCESS = "Viewing %1$s's tasks";
 
@@ -115,6 +121,6 @@ public class ViewTaskListCommand extends Command {
     }
 
     public String getDescription() {
-        return DESCRIPTION;
+        return "Displays the task list of a person specified by index number used in the displayed person list";
     }
 }

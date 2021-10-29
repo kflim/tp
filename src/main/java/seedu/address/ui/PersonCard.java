@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 import seedu.address.model.person.Person;
 
 /**
@@ -44,9 +43,9 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Text taskList;
+    private Label description;
     @FXML
-    private Text tasksDue;
+    private Label tasksDue;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -62,7 +61,7 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-        taskList.setText(person.getDescription().toString());
+        description.setText(person.getDescription().toString());
         tasksDue.setText("Overdue Tasks: " + person.getOverdueTasks()
                 + "\nSoon to be due Tasks: " + person.getSoonDueTasks());
         if (person.isImportant()) {

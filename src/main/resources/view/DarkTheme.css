@@ -29,6 +29,10 @@
     -fx-font-family: "Open Sans Semibold";
 }
 
+.text-description {
+    -fx-text-fill: white;
+}
+
 .tab-pane {
     -fx-padding: 0 0 0 1;
 }
@@ -91,6 +95,43 @@
     -fx-background-insets: 0;
     -fx-padding: 0;
     -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+.tree-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+.tree-cell:filled:even {
+    -fx-background-color: #3c3e3f;
+}
+
+.tree-cell:filled:odd {
+    -fx-background-color: #515658;
+}
+
+.tree-cell:filled:selected #descriptionPane {
+    -fx-border-color: #3e7b91;
+    -fx-border-width: 1;
+}
+
+.tree-cell .label {
+    -fx-text-fill: white;
+}
+
+.tree-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-padding: 0 0 0 0;
+}
+
+.tree-cell:filled:selected {
+    -fx-background-color: #424d5f;
+}
+
+.tree-cell .arrow {
+    -fx-background-color: transparent;
 }
 
 .list-cell {
@@ -328,7 +369,7 @@
     -fx-text-fill: white;
 }
 
-#filterField, #personListPanel, #personWebpage {
+#filterField, #personListPanel, #personWebpage, #allTaskListView {
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
 }
 
