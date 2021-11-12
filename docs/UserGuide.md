@@ -19,6 +19,8 @@ If you are a new user, it is recommended to go through the instructions under [F
 If you are an experienced user, and just want to refer to the list of features, you may use the [Table of contents](#table-of-contents)
 to quickly navigate to the command of your choice.
 
+<div style="page-break-after: always;"></div>
+
 ---
 
 ## Table of Contents
@@ -49,6 +51,7 @@ to quickly navigate to the command of your choice.
 [Command Summary](#command-summary)<br>
 [Flag summary](#flag-summary)
 
+<div style="page-break-after: always;"></div>
 ---
 
 ## Quick start
@@ -73,6 +76,8 @@ to quickly navigate to the command of your choice.
 6. Refer to the [Features](#features) below for details of each command.
 
 7. Refer to the [Flag Summary Table](#flag-summary) below for details on the flags used in the commands.
+
+<div style="page-break-after: always;"></div>
 ---
 
 ## Features
@@ -100,6 +105,7 @@ to quickly navigate to the command of your choice.
   e.g. if you specify `ls 123`, the command will be interpreted as `ls`.
 
 </div>
+<div style="page-break-after: always;"></div>
 
 ### Viewing details of instructions: `man`
 
@@ -115,7 +121,9 @@ Notes:
 
 Examples:
 * `man sort` Shows the full details of `sort` command as below.
-![result for `man sort`](images/ManSortResult.png)
+  ![result for `man sort`](images/ManSortResult.png)
+
+<div style="page-break-after: always;"></div>
 
 ### Adding a person: `add`
 
@@ -151,7 +159,7 @@ Notes:
 * Existing values will be updated to the input values.
 * When editing labels, the existing labels of the person will be removed (i.e editing labels overwrites previous labels).
 * You can remove all the person’s labels by typing `-l` without
-    specifying any labels after it.
+  specifying any labels after it.
 * `IMPORTANCE` is either "true" or "false" (Case insensitive)
 
 Examples:
@@ -198,6 +206,8 @@ Notes:
 * The default sort with no options provided displays a list of persons sorted in ascending ASCII alphabetical order of their name.
 * If the optional `-r` flag is provided, a list of persons sorted in reverse order is displayed.
 
+<div style="page-break-after: always;"></div>
+
 ### Locating persons: `find`
 
 Finds persons whose attribute contains any of the given keywords.
@@ -221,7 +231,9 @@ Examples:
 * `find -n Alex` Finds all people whose name matches the keyword "Alex".
 
 ![result for `find -n Alex`](images/FindAlexResult.png)
+
 <div markdown="span" class="alert alert-primary">
+
 :memo:**Note**: The keywords will only be matched against the start of any word. If any of the keywords are not the
 start of any word in a person's name or if the keywords do not appear in the same order in the persons' name as they do
 in the given input, it will not match that particular task. For instance, `find -n alex` will match a person with
@@ -256,7 +268,7 @@ Notes:
 * Edits a task attached to the person at the specified `INDEX`. `INDEX` refers to the index number shown in the persons list displayed. `INDEX` **must be a positive integer less than or equal to 2147483647:** 1, 2, 3, …​, 2147483647
 * The tasks edited  is specified by the `TASK_INDEX`. `TASK_INDEX` refers to the index number shown in the task list displayed. `TASK_INDEX` **must be a positive integer less than or equal to 2147483647:** 1, 2, 3, …​, 2147483647
 * Existing values will be updated to the input value.
-*At least one of the optional fields must be provided.
+  *At least one of the optional fields must be provided.
 * `TASK_DATE` should follow the format of `YYYY-MM-DD`.
 * `TASK_TIME` should follow the format of `HH:mm`.
 
@@ -264,6 +276,8 @@ Examples:
 
 * `edit 3 -ti2 -tnGroup Project Meeting` Changes the name of the 2nd task attached to the 3rd person in the list to `Group Project Meeting`.
 * `edit 2 -ti3 -tnPresentation Meeting -taZoom` Changes the 3rd task of the 2nd person in the list. Name and address of the 3rd task is changed to`Presentation Meeting` and `Zoom` respectively.
+
+<div style="page-break-after: always;"></div>
 
 ### Deleting a task: `rm`
 
@@ -275,13 +289,15 @@ Notes:
 
 * Deletes a task attached to the person at the specified `INDEX`. `INDEX` refers to the index number shown in the persons list displayed. `INDEX` **must be a positive integer less than or equal to 2147483647:** 1, 2, 3, …​, 2147483647
 * The task deleted is specified by `TASK_INDEX`. `TASK_INDEX` refers to the index number shown in the task list displayed. `TASK_INDEX` **must be a positive integer less than or equal to 2147483647:** 1, 2, 3, …​, 2147483647.
-If the same `TASK_INDEX` is specified more than once, the task will only be deleted once.
+  If the same `TASK_INDEX` is specified more than once, the task will only be deleted once.
 * Multiple tasks of one person can be deleted in one command.
 
 Examples:
 
 * `rm 2 -ti2` Deletes the 2nd task attached to the 2nd person listed.
 * `rm 1 -ti2 -ti3` Deletes the 2nd and 3rd task attached to the 1st person listed.
+
+<div style="page-break-after: always;"></div>
 
 ### Viewing list of tasks of a person: `cat`
 
@@ -299,7 +315,7 @@ Shows you a list of tasks that has been attached to a specific person.
    Examples:
 
    * `cat 1` Displays the list of tasks attached to the 1st person.
-   ![result for `cat 1`](images/ViewTaskAlexResult.png)
+     ![result for `cat 1`](images/ViewTaskAlexResult.png)
 
 2. Displays a filtered list of tasks that has been attached to a specific person.
 
@@ -316,7 +332,7 @@ Shows you a list of tasks that has been attached to a specific person.
 
    * Alex is the first person in the person list and has the tasks [Work, project meeting at NUS]. `cat 1 -f work` will display the task "work"
    * `cat 1 -f work` Displays the list of tasks attached to the 1st person that match the given keywords(s).
-   ![result for `cat 1 -f work`](images/ViewTaskAlexFilteredResult.png)
+     ![result for `cat 1 -f work`](images/ViewTaskAlexFilteredResult.png)
 
 <div markdown="span" class="alert alert-primary">
 :memo:**Note**: The keywords will only be matched against the start of any word. If any of the keywords are not the
@@ -331,7 +347,7 @@ given input, it will not match that particular task. For instance, `cat 1 -f wor
 
    Example:
    * `cat -A`
-   ![result for `cat -A`](images/ViewAllTaskResult.png)
+     ![result for `cat -A`](images/ViewAllTaskResult.png)
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
     Alternatively, you could also click on the person in the GUI to open said person's tasks!
@@ -376,7 +392,7 @@ Examples:
 
    Notes:
 
-    * The default value is 3 days.
+   * The default value is 3 days.
 
 
 2. Sets the number of days prior to the date of tasks for them to be considered as due soon. This affects all tasks.
