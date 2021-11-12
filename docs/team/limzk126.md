@@ -86,6 +86,7 @@ Relevant PRs include: [#110](https://github.com/AY2122S1-CS2103T-W10-1/tp/pull/1
 * Added user stories, product scope and target audience. [#23](https://github.com/AY2122S1-CS2103T-W10-1/tp/pull/23),
   [#195](https://github.com/AY2122S1-CS2103T-W10-1/tp/pull/195)
 * Added Implementation for view tasks functionality. [#73](https://github.com/AY2122S1-CS2103T-W10-1/tp/pull/73)
+* Added delete tasks instructions to the testing manual.
 
 ## **Testing:**
 * Added more Junit tests for LogicManager and ModelManager. [#54](https://github.com/AY2122S1-CS2103T-W10-1/tp/pull/54)

@@ -315,7 +315,7 @@ Shows you a list of tasks that has been attached to a specific person.
    Examples:
 
    * `cat 1` Displays the list of tasks attached to the 1st person.
-     ![result for `cat 1`](images/ViewTaskAlexResult.png)
+   ![result for `cat 1`](images/ViewTaskAlexResult1.png)
 
 2. Displays a filtered list of tasks that has been attached to a specific person.
 
@@ -347,7 +347,7 @@ given input, it will not match that particular task. For instance, `cat 1 -f wor
 
    Example:
    * `cat -A`
-     ![result for `cat -A`](images/ViewAllTaskResult.png)
+   ![result for `cat -A`](images/ViewAllTaskResult1.png)
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
     Alternatively, you could also click on the person in the GUI to open said person's tasks!
